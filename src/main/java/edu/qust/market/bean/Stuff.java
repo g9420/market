@@ -21,6 +21,8 @@ public class Stuff implements Serializable {
 
     private Long modifyTime;
 
+    private Integer pageView;
+
     private static final long serialVersionUID = 1L;
 
     public Long getStuffId() {
@@ -95,6 +97,14 @@ public class Stuff implements Serializable {
         this.modifyTime = modifyTime;
     }
 
+    public Integer getPageView() {
+        return pageView;
+    }
+
+    public void setPageView(Integer pageView) {
+        this.pageView = pageView;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -110,6 +120,7 @@ public class Stuff implements Serializable {
         sb.append(", cateId=").append(cateId);
         sb.append(", createTime=").append(createTime);
         sb.append(", modifyTime=").append(modifyTime);
+        sb.append(", pageView=").append(pageView);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

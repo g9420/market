@@ -28,9 +28,10 @@ public class FileUpload {
             System.out.println("-----类型------->" + part.getContentType());
             System.out.println("-----提交的类型名称------->" + part.getSubmittedFileName());
             System.out.println("----流-------->" + part.getInputStream());
-            if (part.getContentType() != null) {
-                fis = (FileInputStream) part.getInputStream();
+            if (!"file".equals(part.getName())) {
+                continue;
             }
+            fis = (FileInputStream) part.getInputStream();
             if (part.getContentType() != null)
                 type = part.getContentType().split("/")[1];
         }
@@ -38,7 +39,14 @@ public class FileUpload {
 
         String time = DateUtils.getCurrDate(DateUtils.LONG_DATE_FORMAT).replace("-","_");
         Long name = System.currentTimeMillis();
-        FileOutputStream fos = new FileOutputStream(ResourceUtils.getURL("classpath:static/goods_images/").getPath() + time + "_" + name + "." + type);
+        String path =System.getProperty("user.dir")+ "/static/goods_images/";
+
+        File dir = new File(path);
+        System.out.println(dir.getAbsolutePath());
+        if (!dir.exists()){
+            dir.mkdirs();
+        }
+        FileOutputStream fos = new FileOutputStream( dir.getAbsolutePath()+"/"+ time + "_" + name + "." + type);
         byte[] by = new byte[1024];
         int len = 0;
         while ((len = fis.read(by)) != -1) {
@@ -50,7 +58,7 @@ public class FileUpload {
     }
 
     public static void main(String[] args) throws FileNotFoundException {
-        System.out.println(ResourceUtils.getURL("classpath:static/goods_images/").getPath());
+        System.out.println(ResourceUtils.getURL("classpath:").getPath());
 
     }
 }

@@ -25,52 +25,52 @@ public class MarketApplication {
         AccessTokenUtil.getAccess_token();
     }
 
-//    @Bean
-//    public Connector connector() {
-//
-//        Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
-//
-//        connector.setScheme("http");
-//
-//        connector.setPort(8088);
-//
-//        connector.setSecure(false);
-//
-//        connector.setRedirectPort(65534);
-//
-//        return connector;
-//
-//    }
-//
-//    @Bean
-//    public TomcatServletWebServerFactory tomcatServletWebServerFactory() {
-//
-//        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
-//
-//            @Override
-//
-//            protected void postProcessContext(Context context) {
-//
-//                SecurityConstraint securityConstraint = new SecurityConstraint();
-//
-//                securityConstraint.setUserConstraint("CONFIDENTIAL");
-//
-//                SecurityCollection collection = new SecurityCollection();
-//
-//                collection.addPattern("/*");
-//
-//                securityConstraint.addCollection(collection);
-//
-//                context.addConstraint(securityConstraint);
-//
-//            }
-//
-//        };
-//
-//        tomcat.addAdditionalTomcatConnectors(connector());
-//
-//        return tomcat;
-//
-//    }
+    @Bean
+    public Connector connector() {
+
+        Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+
+        connector.setScheme("http");
+
+        connector.setPort(8088);
+
+        connector.setSecure(false);
+
+        connector.setRedirectPort(65534);
+
+        return connector;
+
+    }
+
+    @Bean
+    public TomcatServletWebServerFactory tomcatServletWebServerFactory() {
+
+        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
+
+            @Override
+
+            protected void postProcessContext(Context context) {
+
+                SecurityConstraint securityConstraint = new SecurityConstraint();
+
+                securityConstraint.setUserConstraint("CONFIDENTIAL");
+
+                SecurityCollection collection = new SecurityCollection();
+
+                collection.addPattern("/*");
+
+                securityConstraint.addCollection(collection);
+
+                context.addConstraint(securityConstraint);
+
+            }
+
+        };
+
+        tomcat.addAdditionalTomcatConnectors(connector());
+
+        return tomcat;
+
+    }
 
 }

@@ -2,6 +2,7 @@ package edu.qust.market.controller;
 
 import edu.qust.market.bean.Session;
 import edu.qust.market.bean.Stuff;
+import edu.qust.market.bean.User;
 import edu.qust.market.framework.bean.WebModel;
 import edu.qust.market.framework.message.ErrorEnum;
 import edu.qust.market.framework.message.Message;
@@ -58,6 +59,32 @@ public class UerController {
             userService.updataStuffByStuffId(stuff);
             return Message.createSuccessMessage();
         } catch (Exception e) {
+            e.printStackTrace();
+            return Message.createFailureMessage(ErrorEnum.UnknowError);
+        }
+    }
+
+    @RequestMapping("/getUserInfo")
+    public Message getUSerInfo(@RequestParam("token") String token){
+        try{
+            String openId = sessionService.selectSessionByToken(token).get(0).getId();
+            User user = userService.selectIdByOpenId(openId).get(0);
+            return Message.createSuccessMessage(user);
+        }catch (Exception e){
+            e.printStackTrace();
+            return Message.createFailureMessage(ErrorEnum.UnknowError);
+        }
+    }
+
+    @RequestMapping("/updataUserInfo")
+    public Message updataUserInfo(@RequestParam("openid") String openid,User user){
+        try{
+            System.out.println(user);
+            int id = userService.selectIdByOpenId(openid).get(0).getId();
+            user.setId(id);
+            userService.updataUserById(user);
+            return Message.createSuccessMessage();
+        }catch (Exception e){
             e.printStackTrace();
             return Message.createFailureMessage(ErrorEnum.UnknowError);
         }

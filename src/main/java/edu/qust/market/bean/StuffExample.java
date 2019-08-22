@@ -683,6 +683,66 @@ public class StuffExample {
             addCriterion("MODIFY_TIME not between", value1, value2, "modifyTime");
             return (Criteria) this;
         }
+
+        public Criteria andPageViewIsNull() {
+            addCriterion("page_view is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageViewIsNotNull() {
+            addCriterion("page_view is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageViewEqualTo(Integer value) {
+            addCriterion("page_view =", value, "pageView");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageViewNotEqualTo(Integer value) {
+            addCriterion("page_view <>", value, "pageView");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageViewGreaterThan(Integer value) {
+            addCriterion("page_view >", value, "pageView");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageViewGreaterThanOrEqualTo(Integer value) {
+            addCriterion("page_view >=", value, "pageView");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageViewLessThan(Integer value) {
+            addCriterion("page_view <", value, "pageView");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageViewLessThanOrEqualTo(Integer value) {
+            addCriterion("page_view <=", value, "pageView");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageViewIn(List<Integer> values) {
+            addCriterion("page_view in", values, "pageView");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageViewNotIn(List<Integer> values) {
+            addCriterion("page_view not in", values, "pageView");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageViewBetween(Integer value1, Integer value2) {
+            addCriterion("page_view between", value1, value2, "pageView");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageViewNotBetween(Integer value1, Integer value2) {
+            addCriterion("page_view not between", value1, value2, "pageView");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

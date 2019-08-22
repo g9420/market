@@ -13,6 +13,8 @@ import edu.qust.market.service.SessionService;
 import edu.qust.market.service.StuffService;
 import edu.qust.market.service.UserService;
 import edu.qust.market.utils.FileUpload;
+import edu.qust.market.utils.Md5Util;
+import edu.qust.market.utils.ZylToken;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.slf4j.Logger;
@@ -27,6 +29,7 @@ import java.util.List;
 @RequestMapping("/stuff")
 @RestController
 public class StuffController {
+    static int i = 0;
     private static final Logger log = LoggerFactory.getLogger(StuffController.class);
 
     @Autowired
@@ -53,6 +56,7 @@ public class StuffController {
     public Message selectStuffById(@RequestParam("id") Long id) {
         try {
             Stuff stuff = stuffService.selectStuffById(id);
+            stuffService.pageViewAdd(id);
             return Message.createSuccessMessage(stuff);
         } catch (Exception e) {
             e.printStackTrace();
@@ -91,7 +95,7 @@ public class StuffController {
             stuff.setCreateTime(System.currentTimeMillis());
             System.out.println(stuff);
             stuffService.insertStuff(stuff);
-            return Message.createSuccessMessage(stuff.getStuffId());
+            return Message.createSuccessMessage(ZylToken.addKey(stuff.getStuffId()));
         } catch (Exception e) {
             e.printStackTrace();
             return Message.createFailureMessage(ErrorEnum.UnknowError);
@@ -99,19 +103,20 @@ public class StuffController {
     }
 
     @RequestMapping("/upload")
-    public Message uploadFile(HttpServletRequest httpServletRequest,@RequestParam("token") String token, Stuff stuff) {
+    public Message uploadFile(HttpServletRequest httpServletRequest,@RequestParam("token_key") String token_key,@RequestParam("id") long id) {
         try {
-            String openId = sessionService.selectSessionByToken(token).get(0).getId();
-            long userId = userService.selectIdByOpenId(openId).get(0).getId();
-            stuff.setUserId(userId);
-            stuff.setCreateTime(System.currentTimeMillis());
-            System.out.println(stuff);
-            stuffService.insertStuff(stuff);
+            System.out.println(token_key);
+            System.out.println("222222222");
+            System.out.println(id);
+            System.out.println("222222");
             File_form file_form = new File_form();
             file_form.setUrl(FileUpload.savaFile(httpServletRequest));
             file_form.setTable("tb_stuff");
             file_form.setTypeId(1);
-            file_form.setTableId((Integer.parseInt(stuff.getStuffId()+ "")));
+            if (!ZylToken.portKey(id,token_key)){
+                return Message.createFailureMessage(ErrorEnum.IllegalOperation);
+            }
+            file_form.setTableId((int) id);
             fileFormService.insertFile(file_form);
             return Message.createSuccessMessage();
         } catch (Exception e) {
