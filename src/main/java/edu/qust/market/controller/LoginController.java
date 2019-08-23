@@ -43,14 +43,18 @@ public class LoginController {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
             String data = HttpUtil.sendGetRequest(url, params, new HttpHeaders());
             JSONObject jsonObject = (JSONObject) JSONObject.parse(data);
-            String id = (String) jsonObject.get("openid");
-            sessionService.deleteById(id);
+            String openid = (String) jsonObject.get("openid");
+            String session_key = (String) jsonObject.get("session_key");
+            String token = UUID.randomUUID().toString().replace("-", "");
             Session session = new Session();
             session.setSessionKey((String) jsonObject.get("session_key"));
             session.setId((String) jsonObject.get("openid"));
-            String token = UUID.randomUUID().toString().replace("-", "");
             session.setToken(token);
-            sessionService.insertSession(session);
+            if(sessionService.countSessionById(openid) >= 1){
+                sessionService.upDataSession(session);
+            }else{
+                sessionService.insertSession(session);
+            }
             return Message.createSuccessMessage(token);
         } catch (Exception e) {
             e.printStackTrace();

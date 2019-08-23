@@ -1,5 +1,6 @@
 package edu.qust.market.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import edu.qust.market.bean.Session;
 import edu.qust.market.bean.Stuff;
 import edu.qust.market.bean.User;
@@ -9,6 +10,7 @@ import edu.qust.market.framework.message.Message;
 import edu.qust.market.service.SessionService;
 import edu.qust.market.service.StuffService;
 import edu.qust.market.service.UserService;
+import org.bouncycastle.pqc.crypto.MessageSigner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -56,6 +58,10 @@ public class UerController {
         try {
             String openId = sessionService.selectSessionByToken(token).get(0).getId();
             int id = userService.selectIdByOpenId(openId).get(0).getId();
+            int uid = stuff.getUserId().intValue();
+            if(id != uid){
+                return Message.createFailureMessage(ErrorEnum.UnknowError);
+            }
             userService.updataStuffByStuffId(stuff);
             return Message.createSuccessMessage();
         } catch (Exception e) {
@@ -84,6 +90,29 @@ public class UerController {
             user.setId(id);
             userService.updataUserById(user);
             return Message.createSuccessMessage();
+        }catch (Exception e){
+            e.printStackTrace();
+            return Message.createFailureMessage(ErrorEnum.UnknowError);
+        }
+    }
+
+    @RequestMapping("/selectUserLink")
+    public Message selectUserLink(@RequestParam("token") String token,@RequestParam("uid") Integer userId){
+        try{
+            String openId = sessionService.selectSessionByToken(token).get(0).getId();
+            int id = userService.selectIdByOpenId(openId).get(0).getId();
+            User user = userService.selectUserById(userId);
+            JSONObject jo = new JSONObject();
+            if(user.getWechat()!=null&&!"".equals(user.getWechat())){
+                jo.put("WeChat",user.getWechat());
+            }
+            if(user.getQq()!=null&&!"".equals(user.getQq())){
+                jo.put("QQ",user.getQq());
+            }
+            if(user.getPhone()!=null&&!"".equals(user.getPhone())){
+                jo.put("tel",user.getPhone());
+            }
+            return Message.createSuccessMessage(jo);
         }catch (Exception e){
             e.printStackTrace();
             return Message.createFailureMessage(ErrorEnum.UnknowError);

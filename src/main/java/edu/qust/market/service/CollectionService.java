@@ -21,4 +21,24 @@ public class CollectionService {
         cec.andUidEqualTo(uid);
         return collectionMapper.selectByExample(collectionExample);
     }
+
+    public int addCollection(Collection collection){
+        return collectionMapper.insert(collection);
+    }
+
+    public int delecrCollection(int uid,int sid){
+        CollectionExample collectionExample = new CollectionExample();
+        CollectionExample.Criteria cec = collectionExample.createCriteria();
+        cec.andUidEqualTo(uid);
+        cec.andGidEqualTo(sid);
+        return collectionMapper.deleteByExample(collectionExample);
+    }
+
+    public int countCollection(int uid,int sid){
+        CollectionExample collectionExample = new CollectionExample();
+        CollectionExample.Criteria cec = collectionExample.createCriteria();
+        cec.andGidEqualTo(sid);
+        cec.andUidEqualTo(uid);
+        return collectionMapper.countByExample(collectionExample);
+    }
 }

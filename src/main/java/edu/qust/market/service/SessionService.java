@@ -29,4 +29,15 @@ public class SessionService {
         return sessionMapper.deleteByPrimaryKey(id);
     }
 
+    public int countSessionById(String Id){
+        SessionExample sessionExample = new SessionExample();
+        SessionExample.Criteria sec = sessionExample.createCriteria();
+        sec.andIdEqualTo(Id);
+        return sessionMapper.countByExample(sessionExample);
+    }
+
+    public int upDataSession(Session session){
+        return sessionMapper.updateByPrimaryKeySelective(session);
+    }
+
 }

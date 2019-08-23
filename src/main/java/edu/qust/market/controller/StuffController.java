@@ -1,9 +1,11 @@
 package edu.qust.market.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import edu.qust.market.bean.File_form;
 import edu.qust.market.bean.Stuff;
 import edu.qust.market.bean.StuffExample;
+import edu.qust.market.bean.User;
 import edu.qust.market.framework.bean.WebModel;
 import edu.qust.market.framework.message.ErrorEnum;
 import edu.qust.market.framework.message.Message;
@@ -56,8 +58,14 @@ public class StuffController {
     public Message selectStuffById(@RequestParam("id") Long id) {
         try {
             Stuff stuff = stuffService.selectStuffById(id);
+            int userId = stuff.getUserId().intValue();
+            User user = userService.selectUserById(userId);
+            user.setOpenid(null);
             stuffService.pageViewAdd(id);
-            return Message.createSuccessMessage(stuff);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("user",user);
+            jsonObject.put("stuff",stuff);
+            return Message.createSuccessMessage(jsonObject);
         } catch (Exception e) {
             e.printStackTrace();
             return Message.createFailureMessage(ErrorEnum.UnknowError);
