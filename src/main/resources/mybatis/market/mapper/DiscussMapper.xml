@@ -7,6 +7,7 @@
     <result column="DISCUSS_TIME" property="discussTime" jdbcType="BIGINT" />
     <result column="USER_ID" property="userId" jdbcType="BIGINT" />
     <result column="STUFF_ID" property="stuffId" jdbcType="BIGINT" />
+    <result column="receive_discuss_id" property="receiveDiscussId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -67,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    DISCUSS_ID, DISCUSS_DESC, DISCUSS_TIME, USER_ID, STUFF_ID
+    DISCUSS_ID, DISCUSS_DESC, DISCUSS_TIME, USER_ID, STUFF_ID, receive_discuss_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="edu.qust.market.bean.DiscussExample" >
     select
@@ -104,9 +105,11 @@
   </delete>
   <insert id="insert" parameterType="edu.qust.market.bean.Discuss" useGeneratedKeys="true" keyProperty="discussId" >
     insert into tb_discuss (DISCUSS_ID, DISCUSS_DESC, DISCUSS_TIME, 
-      USER_ID, STUFF_ID)
+      USER_ID, STUFF_ID, receive_discuss_id
+      )
     values (#{discussId,jdbcType=BIGINT}, #{discussDesc,jdbcType=VARCHAR}, #{discussTime,jdbcType=BIGINT}, 
-      #{userId,jdbcType=BIGINT}, #{stuffId,jdbcType=BIGINT})
+      #{userId,jdbcType=BIGINT}, #{stuffId,jdbcType=BIGINT}, #{receiveDiscussId,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="edu.qust.market.bean.Discuss" useGeneratedKeys="true" keyProperty="discussId" >
     insert into tb_discuss
@@ -126,6 +129,9 @@
       <if test="stuffId != null" >
         STUFF_ID,
       </if>
+      <if test="receiveDiscussId != null" >
+        receive_discuss_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="discussId != null" >
@@ -142,6 +148,9 @@
       </if>
       <if test="stuffId != null" >
         #{stuffId,jdbcType=BIGINT},
+      </if>
+      <if test="receiveDiscussId != null" >
+        #{receiveDiscussId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -169,6 +178,9 @@
       <if test="record.stuffId != null" >
         STUFF_ID = #{record.stuffId,jdbcType=BIGINT},
       </if>
+      <if test="record.receiveDiscussId != null" >
+        receive_discuss_id = #{record.receiveDiscussId,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -180,7 +192,8 @@
       DISCUSS_DESC = #{record.discussDesc,jdbcType=VARCHAR},
       DISCUSS_TIME = #{record.discussTime,jdbcType=BIGINT},
       USER_ID = #{record.userId,jdbcType=BIGINT},
-      STUFF_ID = #{record.stuffId,jdbcType=BIGINT}
+      STUFF_ID = #{record.stuffId,jdbcType=BIGINT},
+      receive_discuss_id = #{record.receiveDiscussId,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -200,6 +213,9 @@
       <if test="stuffId != null" >
         STUFF_ID = #{stuffId,jdbcType=BIGINT},
       </if>
+      <if test="receiveDiscussId != null" >
+        receive_discuss_id = #{receiveDiscussId,jdbcType=INTEGER},
+      </if>
     </set>
     where DISCUSS_ID = #{discussId,jdbcType=BIGINT}
   </update>
@@ -208,7 +224,8 @@
     set DISCUSS_DESC = #{discussDesc,jdbcType=VARCHAR},
       DISCUSS_TIME = #{discussTime,jdbcType=BIGINT},
       USER_ID = #{userId,jdbcType=BIGINT},
-      STUFF_ID = #{stuffId,jdbcType=BIGINT}
+      STUFF_ID = #{stuffId,jdbcType=BIGINT},
+      receive_discuss_id = #{receiveDiscussId,jdbcType=INTEGER}
     where DISCUSS_ID = #{discussId,jdbcType=BIGINT}
   </update>
 </mapper>

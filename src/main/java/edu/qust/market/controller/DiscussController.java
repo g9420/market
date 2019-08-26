@@ -1,12 +1,12 @@
 package edu.qust.market.controller;
 
 import edu.qust.market.bean.Discuss;
+import edu.qust.market.bean.News;
+import edu.qust.market.bean.Stuff;
 import edu.qust.market.framework.bean.WebModel;
 import edu.qust.market.framework.message.ErrorEnum;
 import edu.qust.market.framework.message.Message;
-import edu.qust.market.service.DiscussService;
-import edu.qust.market.service.SessionService;
-import edu.qust.market.service.UserService;
+import edu.qust.market.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +22,10 @@ public class DiscussController {
     private SessionService sessionService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private NewsService newsService;
+    @Autowired
+    private StuffService stuffService;
 
     @RequestMapping("/getDiscussByStuffId")
     public Message getDiscussByStuffId(@RequestParam("sid") Long sid, WebModel webModel){
@@ -55,7 +59,31 @@ public class DiscussController {
             discuss.setUserId(id);
             discuss.setDiscussTime(System.currentTimeMillis());
             discussService.insertDiscuss(discuss);
+            Long reUid;
+            News news = new News();
+            if(discuss.getReceiveDiscussId()!= 0){
+                news.setType(1);
+                reUid = discussService.selectDiscussById(discuss.getReceiveDiscussId()).getUserId();
+            }else{
+                reUid = stuffService.selectStuffById(discuss.getStuffId()).getUserId();
+            }
+//            if(reUid == id){
+//                return Message.createSuccessMessage();
+//            }
+            news.setDisscussId(discuss.getDiscussId().intValue());
+            news.setUid(reUid.intValue());
+            newsService.insertNews(news);
             return Message.createSuccessMessage();
+        }catch (Exception e){
+            e.printStackTrace();
+            return Message.createFailureMessage(ErrorEnum.UnknowError);
+        }
+    }
+
+    @RequestMapping("/getDiscussByDiscussId")
+    public Message getDiscussByDiscussId(@RequestParam("discussId") Long discussId){
+        try{
+            return Message.createSuccessMessage(discussService.selectDiscussByDiscussId(discussId));
         }catch (Exception e){
             e.printStackTrace();
             return Message.createFailureMessage(ErrorEnum.UnknowError);

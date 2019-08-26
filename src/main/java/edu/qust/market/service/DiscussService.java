@@ -49,6 +49,10 @@ public class DiscussService {
         webModel.setData(data);
     }
 
+    public Discuss selectDiscussById(long id){
+        return discussMapper.selectByPrimaryKey(id);
+    }
+
     //向返回数据中添加图片
     public List<JSONObject> setUserAvatar(List<Discuss> list) {
         List<JSONObject> newlist = new ArrayList<>();
@@ -63,4 +67,12 @@ public class DiscussService {
         }
         return newlist;
     }
+
+    public List<JSONObject> selectDiscussByDiscussId(long discussId){
+        ArrayList<Discuss> list = new ArrayList<>();
+        Discuss discuss = discussMapper.selectByPrimaryKey(discussId);
+        list.add(discuss);
+        return setUserAvatar(list);
+    }
+
 }

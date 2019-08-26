@@ -31,15 +31,15 @@ public class CollectionComtroller {
     private StuffService stuffService;
 
     @RequestMapping("/selectUserCollection")
-    public Message selectUserCollection(String token){
+    public Message selectUserCollection(String token,WebModel webModel){
         try{
             String opedId = sessionService.selectSessionByToken(token).get(0).getId();
             int id = userService.selectIdByOpenId(opedId).get(0).getId();
             List<Collection> list = collectionService.selctCollectionByUid(id);
             JSONObject jo = new JSONObject();
             for(Collection collection : list){
-                long gid = collection.getGid();
-                jo.put("data",stuffService.selectStuffById(gid));
+                long sid = collection.getGid();
+                jo.put("data",stuffService.selectStuffDetailBySid(sid));
             }
             return Message.createSuccessMessage(jo);
         }catch (Exception e){

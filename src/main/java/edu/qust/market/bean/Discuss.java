@@ -13,6 +13,8 @@ public class Discuss implements Serializable {
 
     private Long stuffId;
 
+    private Integer receiveDiscussId;
+
     private static final long serialVersionUID = 1L;
 
     public Long getDiscussId() {
@@ -55,6 +57,14 @@ public class Discuss implements Serializable {
         this.stuffId = stuffId;
     }
 
+    public Integer getReceiveDiscussId() {
+        return receiveDiscussId;
+    }
+
+    public void setReceiveDiscussId(Integer receiveDiscussId) {
+        this.receiveDiscussId = receiveDiscussId;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -66,6 +76,7 @@ public class Discuss implements Serializable {
         sb.append(", discussTime=").append(discussTime);
         sb.append(", userId=").append(userId);
         sb.append(", stuffId=").append(stuffId);
+        sb.append(", receiveDiscussId=").append(receiveDiscussId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

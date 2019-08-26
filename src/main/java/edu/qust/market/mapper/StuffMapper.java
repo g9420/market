@@ -5,9 +5,7 @@ import edu.qust.market.bean.StuffExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Component;
 
-@Component
 @Mapper
 public interface StuffMapper {
     int countByExample(StuffExample example);

@@ -44,6 +44,15 @@ public class StuffService {
         webModel.setData(newlist);
     }
 
+    public List<JSONObject> selectStuffDetailBySid(long id){
+        Stuff stuff = stuffMapper.selectByPrimaryKey(id);
+        ArrayList list = new ArrayList();
+        list.add(stuff);
+        List<JSONObject> newlist = new ArrayList<>();
+        setStuffImg(list, newlist);
+        return newlist;
+    }
+
 
 
     public Stuff selectStuffById(Long id){

@@ -433,6 +433,66 @@ public class DiscussExample {
             addCriterion("STUFF_ID not between", value1, value2, "stuffId");
             return (Criteria) this;
         }
+
+        public Criteria andReceiveDiscussIdIsNull() {
+            addCriterion("receive_discuss_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiveDiscussIdIsNotNull() {
+            addCriterion("receive_discuss_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiveDiscussIdEqualTo(Integer value) {
+            addCriterion("receive_discuss_id =", value, "receiveDiscussId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiveDiscussIdNotEqualTo(Integer value) {
+            addCriterion("receive_discuss_id <>", value, "receiveDiscussId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiveDiscussIdGreaterThan(Integer value) {
+            addCriterion("receive_discuss_id >", value, "receiveDiscussId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiveDiscussIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("receive_discuss_id >=", value, "receiveDiscussId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiveDiscussIdLessThan(Integer value) {
+            addCriterion("receive_discuss_id <", value, "receiveDiscussId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiveDiscussIdLessThanOrEqualTo(Integer value) {
+            addCriterion("receive_discuss_id <=", value, "receiveDiscussId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiveDiscussIdIn(List<Integer> values) {
+            addCriterion("receive_discuss_id in", values, "receiveDiscussId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiveDiscussIdNotIn(List<Integer> values) {
+            addCriterion("receive_discuss_id not in", values, "receiveDiscussId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiveDiscussIdBetween(Integer value1, Integer value2) {
+            addCriterion("receive_discuss_id between", value1, value2, "receiveDiscussId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiveDiscussIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("receive_discuss_id not between", value1, value2, "receiveDiscussId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
