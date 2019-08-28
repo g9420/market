@@ -108,7 +108,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="edu.qust.market.bean.Stuff" useGeneratedKeys="true" keyProperty="id" >
+  <insert id="insert" parameterType="edu.qust.market.bean.Stuff" useGeneratedKeys="true" keyProperty="stuffId" >
     insert into tb_stuff (STUFF_ID, STUFF_NAME, STUFF_INFO, 
       STUFF_PRICE, STUFF_ACTIVE, USER_ID, 
       CATE_ID, CREATE_TIME, MODIFY_TIME, 
@@ -118,7 +118,7 @@
       #{cateId,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT}, #{modifyTime,jdbcType=BIGINT}, 
       #{pageView,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="edu.qust.market.bean.Stuff" useGeneratedKeys="true" keyProperty="id" >
+  <insert id="insertSelective" parameterType="edu.qust.market.bean.Stuff" useGeneratedKeys="true" keyProperty="stuffId" >
     insert into tb_stuff
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="stuffId != null" >

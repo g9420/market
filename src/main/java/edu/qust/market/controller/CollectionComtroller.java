@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -36,12 +38,14 @@ public class CollectionComtroller {
             String opedId = sessionService.selectSessionByToken(token).get(0).getId();
             int id = userService.selectIdByOpenId(opedId).get(0).getId();
             List<Collection> list = collectionService.selctCollectionByUid(id);
-            JSONObject jo = new JSONObject();
+            ArrayList<HashMap<String,Object>> data  = new ArrayList<>();
             for(Collection collection : list){
+                HashMap<String,Object> map = new HashMap<>();
                 long sid = collection.getGid();
-                jo.put("data",stuffService.selectStuffDetailBySid(sid));
+                map.put("data",stuffService.selectStuffDetailBySid(sid));
+                data.add(map);
             }
-            return Message.createSuccessMessage(jo);
+            return Message.createSuccessMessage(data);
         }catch (Exception e){
             e.printStackTrace();
             return Message.createFailureMessage(ErrorEnum.UnknowError);

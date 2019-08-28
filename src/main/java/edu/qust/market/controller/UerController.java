@@ -58,9 +58,10 @@ public class UerController {
         try {
             String openId = sessionService.selectSessionByToken(token).get(0).getId();
             int id = userService.selectIdByOpenId(openId).get(0).getId();
-            int uid = stuff.getUserId().intValue();
+            Stuff stuff1 = stuffService.selectStuffById(stuff.getStuffId());
+            int uid = stuff1.getUserId().intValue();
             if(id != uid){
-                return Message.createFailureMessage(ErrorEnum.UnknowError);
+                return Message.createFailureMessage(ErrorEnum.IllegalOperation);
             }
             userService.updataStuffByStuffId(stuff);
             return Message.createSuccessMessage();

@@ -36,6 +36,8 @@ public class StuffService {
         stuffExample.setLimitStart(webModel.getLimitStart());
         stuffExample.setPageSize(webModel.getPs());
         stuffExample.setOrderByClause("`CREATE_TIME` DESC");
+        StuffExample.Criteria sec = stuffExample.createCriteria();
+        sec.andStuffActiveNotEqualTo(2);
         int count = stuffMapper.countByExample(stuffExample);
         webModel.setTotalCount(count);
         List<Stuff> list = stuffMapper.selectByExample(stuffExample);
@@ -62,6 +64,7 @@ public class StuffService {
     public void getStuffByCategory(Long cid,WebModel webModel){
         StuffExample stuffExample = new StuffExample();
         StuffExample.Criteria sec = stuffExample.createCriteria();
+        sec.andStuffActiveNotEqualTo(2);
         sec.andCateIdEqualTo(cid);
         stuffExample.setLimitStart(webModel.getLimitStart());
         stuffExample.setPageSize(webModel.getPs());
@@ -78,8 +81,9 @@ public class StuffService {
         StuffExample stuffExample = new StuffExample();
         stuffExample.setLimitStart(webModel.getLimitStart());
         stuffExample.setPageSize(webModel.getPs());
-        stuffExample.or().andStuffNameLike("%" + keyWords + "%");
-        stuffExample.or().andStuffInfoLike("%" + keyWords + "%");
+        StuffExample.Criteria sec = stuffExample.createCriteria();
+        stuffExample.or().andStuffNameLike("%" + keyWords + "%").andStuffActiveNotEqualTo(2);
+        stuffExample.or().andStuffInfoLike("%" + keyWords + "%").andStuffActiveNotEqualTo(2);
         int count = stuffMapper.countByExample(stuffExample);
         List<Stuff> list =  stuffMapper.selectByExample(stuffExample);
         webModel.setTotalCount(count);
@@ -93,6 +97,7 @@ public class StuffService {
         stuffExample.setLimitStart(webModel.getLimitStart());
         stuffExample.setPageSize(webModel.getPs());
         StuffExample.Criteria sec = stuffExample.createCriteria();
+        sec.andStuffActiveNotEqualTo(2);
         sec.andUserIdEqualTo(id);
         int count = stuffMapper.countByExample(stuffExample);
         List<Stuff> list = stuffMapper.selectByExample(stuffExample);

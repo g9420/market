@@ -67,9 +67,9 @@ public class DiscussController {
             }else{
                 reUid = stuffService.selectStuffById(discuss.getStuffId()).getUserId();
             }
-//            if(reUid == id){
-//                return Message.createSuccessMessage();
-//            }
+            if(reUid == id){
+                return Message.createSuccessMessage();
+            }
             news.setDisscussId(discuss.getDiscussId().intValue());
             news.setUid(reUid.intValue());
             newsService.insertNews(news);
