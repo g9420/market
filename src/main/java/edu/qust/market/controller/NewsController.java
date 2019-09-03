@@ -1,6 +1,5 @@
 package edu.qust.market.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import edu.qust.market.bean.Discuss;
 import edu.qust.market.bean.News;
 import edu.qust.market.bean.Stuff;
@@ -8,7 +7,6 @@ import edu.qust.market.bean.User;
 import edu.qust.market.framework.bean.WebModel;
 import edu.qust.market.framework.message.ErrorEnum;
 import edu.qust.market.framework.message.Message;
-import edu.qust.market.mapper.NewsMapper;
 import edu.qust.market.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -70,7 +68,11 @@ public class NewsController {
     @RequestMapping("/selectNewsNumberByToken")
     public Message selecrNewsNumber(@RequestParam("token") String token) {
         try {
-            String openId = sessionService.selectSessionByToken(token).get(0).getId();
+            String openId = "";
+            if(sessionService.selectSessionByToken(token).size() == 0){
+                return Message.createFailureMessage(ErrorEnum.UnknownAccount);
+            }
+            openId = sessionService.selectSessionByToken(token).get(0).getId();
             int uid = userService.selectIdByOpenId(openId).get(0).getId();
             int count = newsService.selectNewsByUid(uid);
             return Message.createSuccessMessage(count);

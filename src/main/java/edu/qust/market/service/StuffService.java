@@ -12,6 +12,7 @@ import edu.qust.market.mapper.File_formMapper;
 import edu.qust.market.mapper.StuffMapper;
 import edu.qust.market.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -54,7 +55,6 @@ public class StuffService {
         setStuffImg(list, newlist);
         return newlist;
     }
-
 
 
     public Stuff selectStuffById(Long id){

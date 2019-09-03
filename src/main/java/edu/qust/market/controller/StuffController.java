@@ -4,35 +4,31 @@ package edu.qust.market.controller;
 import com.alibaba.fastjson.JSONObject;
 import edu.qust.market.bean.File_form;
 import edu.qust.market.bean.Stuff;
-import edu.qust.market.bean.StuffExample;
 import edu.qust.market.bean.User;
+import edu.qust.market.common.AccessLimit;
 import edu.qust.market.framework.bean.WebModel;
 import edu.qust.market.framework.message.ErrorEnum;
 import edu.qust.market.framework.message.Message;
-import edu.qust.market.mapper.StuffMapper;
 import edu.qust.market.service.FileFormService;
 import edu.qust.market.service.SessionService;
 import edu.qust.market.service.StuffService;
 import edu.qust.market.service.UserService;
 import edu.qust.market.utils.FileUpload;
-import edu.qust.market.utils.Md5Util;
 import edu.qust.market.utils.ZylToken;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.rmi.MarshalException;
-import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-@RequestMapping("/stuff")
+
 @RestController
+@RequestMapping("/stuff")
 public class StuffController {
     static int i = 0;
-    private static final Logger log = LoggerFactory.getLogger(StuffController.class);
 
     @Autowired
     private StuffService stuffService;
@@ -42,7 +38,10 @@ public class StuffController {
     private UserService userService;
     @Autowired
     private FileFormService fileFormService;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
+    @AccessLimit(seconds = 4,maxCount = 2)
     @RequestMapping("/selectAll")
     public Message selectAll(WebModel webModel) {
         try {
@@ -98,6 +97,13 @@ public class StuffController {
     public Message addStuffByToken(@RequestParam("token") String token, Stuff stuff) {
         try {
             String openId = sessionService.selectSessionByToken(token).get(0).getId();
+            long count = redisTemplate.opsForValue().increment(openId, 1);
+            if(count == 1){
+                redisTemplate.expire(openId, 5, TimeUnit.MINUTES);
+            }
+            if(count > 1){
+                return Message.createFailureMessage(ErrorEnum.repeatedSubmit);
+            }
             long userId = userService.selectIdByOpenId(openId).get(0).getId();
             stuff.setUserId(userId);
             stuff.setCreateTime(System.currentTimeMillis());
@@ -113,10 +119,6 @@ public class StuffController {
     @RequestMapping("/upload")
     public Message uploadFile(HttpServletRequest httpServletRequest,@RequestParam("token_key") String token_key,@RequestParam("id") long id) {
         try {
-            System.out.println(token_key);
-            System.out.println("222222222");
-            System.out.println(id);
-            System.out.println("222222");
             File_form file_form = new File_form();
             file_form.setUrl(FileUpload.savaFile(httpServletRequest));
             file_form.setTable("tb_stuff");

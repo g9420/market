@@ -4,6 +4,7 @@ import edu.qust.market.bean.Session;
 import edu.qust.market.bean.SessionExample;
 import edu.qust.market.mapper.SessionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -8,12 +8,14 @@ public enum ErrorEnum {
     IncorrectCredentials("错误的密码", 103),
 	
     NoPermission("没有权限", 200),
-    
+    FrequentOperation("操作过于频繁",300),
+    repeatedSubmit("重复提交",400),
+
     UnknowError("未知错误",600),
     IllegalOperation("违章操作",700);
-	
-	
-	
+
+
+
     // 成员变量
     private String errorName;
     private int errorCode;
