@@ -38,7 +38,7 @@ public class LoginController {
 
     @RequestMapping("/dologin")
     public Message login(@RequestParam("code") String code) {
-        String url = "https://api.weixin.qq.com/sns/jscode2session?appid=wxa53604527bfbb0d2&secret=6ca1bfbd80f371371725966f73a31c61&js_code=" + code + "&grant_type=authorization_code";
+        String url = "https://api.weixin.qq.com/sns/jscode2session?appid=appid&secret=secret&js_code=" + code + "&grant_type=authorization_code";
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
             String data = HttpUtil.sendGetRequest(url, params, new HttpHeaders());
